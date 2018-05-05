@@ -4,12 +4,12 @@ var http = require('http');
 //
 // Create a node-static server instance to serve the './public' folder
 //
-var file = new static.Server('.');
+var file = new static.Server('./public');
 
 // like a callback
 function handler (request, response) {
     var url = request.url;
-    if (!url.startsWith("/public/"))
+    if (url.startsWith("/query/"))
     {
         url = url.replace("/","");
         response.writeHead(200, {"Content-Type": "text/html"});
@@ -26,7 +26,7 @@ function handler (request, response) {
             // file.serve(request, response);
             file.serve(request, response, function (e, res) {
                 if (e && (e.status === 404)) { // If the file wasn't found
-                    file.serveFile('./not-found.html', 404, {}, request, response);
+                    file.serveFile('../not-found.html', 404, {}, request, response);
                 }
             });
         }).resume();
