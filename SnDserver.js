@@ -33,7 +33,7 @@ function handler (request, response) {
         response.write("<p>You asked for <code>" + url + "</code></p>");
         response.end();
     }
-    else if(url.startsWith("/query?num=")
+    else if(url.startsWith("/query?num="))
     {
 	var numsplit = url.split("=");
 	var num = numsplit[1];
