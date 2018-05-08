@@ -1,5 +1,5 @@
 // Global; will be replaced by a call to the server! 
-var photoURLArray = 
+var photoURLArray=
 [
  { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/A%20Torre%20Manuelina.jpg"},
  { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/Uluru%20sunset1141.jpg" },
@@ -9,7 +9,6 @@ var photoURLArray =
  { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/Red%20pencil%20urchin%20-%20Papahnaumokukea.jpg"}
  ];
 
-
 // Called when the user pushes the "submit" button 
 function photoByNumber() {
 
@@ -17,10 +16,21 @@ function photoByNumber() {
 	num = num.trim();
 	var photoNum = Number(num);
 	if (photoNum != NaN) {
-		var photoURL = photoURLArray[photoNum].url;
-		var display = document.getElementById("photoImg");
-		display.src = photoURL;
+		var photoReq = new XMLHttpRequest();
+		url = "/query?num="+num;
+		photoReq.open("GET", url);
+		// setup callback
+		photoReq.addEventListener("load", DisplayPhoto);
+		// load event occurs when response comes back
+		photoReq.send();
 	    }
+}
+
+function DisplayPhoto()
+{
+	var photoURL = this.responseText;
+	var display = document.getElementById("photoImg");
+	display.src = photoURL;
 }
 
 

@@ -26,7 +26,9 @@ function dynamicQuery(url, response) {
         if (!isNaN(num) && (num >= 0 && num <= 988))//get the image 
         {
             response.writeHead(200, { "Content-Type": "text/plain" });
-            response.write(imgList[num]);
+            var urlResponse = "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/"+imgList[num];
+            urlResponse = urlResponse.replace(/ /g, "%20");
+            response.write(urlResponse);
             response.end();
         }
         else //do a bad query response
