@@ -33,8 +33,8 @@ function dynamicQuery(url, response) {
         }
         else //do a bad query response
         {
-            response.writeHead(400, { "Content-Type": "text/html" });
-            response.write("<h1>Bad Query</h1>");
+            response.writeHead(400, { "Content-Type": "text/plain" });
+            response.write("Bad Query");
             response.end();
         }
     }
@@ -63,7 +63,7 @@ function handler(request, response) {
             // file.serve(request, response);
             file.serve(request, response, function (e, res) {
                 if (e && (e.status === 404)) { // If the file wasn't found
-                    file.serveFile('../not-found.html', 404, {}, request, response);
+                    file.serveFile('./not-found.html', 404, {}, request, response);
                 }
             });
         }).resume();

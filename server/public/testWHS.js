@@ -28,9 +28,16 @@ function photoByNumber() {
 
 function DisplayPhoto()
 {
+	var photoStatus = this.status;
 	var photoURL = this.responseText;
 	var display = document.getElementById("photoImg");
-	display.src = photoURL;
+	if (photoStatus ==200)//If status is OK
+		display.src = photoURL;
+	else if (photoStatus==400)//If bad query
+	{
+		display.src="#";
+		display.alt=photoURL;
+	}
 }
 
 
