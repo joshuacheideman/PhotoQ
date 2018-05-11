@@ -22,7 +22,7 @@ function dynamicQuery(url, response) {
     }
     else if (url.startsWith("/query?num=")) {
         var numsplit = url.split("=");
-        var num = numsplit[1];
+        var num = numsplit[1].toString(10);
         if (!isNaN(num) && (num >= 0 && num <= 988))//get the image 
         {
             response.writeHead(200, { "Content-Type": "text/plain" });
