@@ -25,5 +25,6 @@ function CreateCallback(err)
 	else
 	{
 		console.log("Created database");
+		db.close();
 	}
 }
