@@ -12,12 +12,19 @@ var photoURLArray=
 // Called when the user pushes the "submit" button 
 function photoByNumber() {
 
-	var num = document.getElementById("num").value;
-	num = num.trim();
-	var photoNum = Number(num);
-	if (photoNum != NaN) {
+	var nums = document.getElementById("num").value;
+	nums = nums.trim();
+	var num = nums.replace(/,/g,"+");
+	var numsplit = nums.split(",");
+	var goodRequest = true;
+	for(let i=0;i<numsplit.length;i++)
+	{
+		if(numsplit[i] ==NaN)
+			goodRequest=false;
+	}
+	if (goodRequest) {
 		var photoReq = new XMLHttpRequest();
-		url = "/query?num="+num;
+		url = "/query?numList="+num;
 		photoReq.open("GET", url);
 		// setup callback
 		photoReq.addEventListener("load", DisplayPhoto);
@@ -29,14 +36,21 @@ function photoByNumber() {
 function DisplayPhoto()
 {
 	var photoStatus = this.status;
-	var photoURL = this.responseText;
+	var photoURLs = this.responseText;
+	var photoURL = photoURLs.split("\n");
 	var display = document.getElementById("photoImg");
-	if (photoStatus ==200)//If status is OK
-		display.src = photoURL;
-	else if (photoStatus==400)//If bad query
+	for(let i=0;i<photoURL.length;i++)
 	{
-		display.src="#";
-		display.alt=photoURL;
+		if (photoStatus ==200)//If status is OK
+		{
+			console.log(photoURL[i]);
+			//display.src = photoURL;
+		}
+		else if (photoStatus==400)//If bad query
+		{
+			display.src="#";
+			display.alt=photoURL;
+		}
 	}
 }
 
