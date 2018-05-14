@@ -46,7 +46,7 @@ function DataCallback(err)
     {
         if(index<imgList.length)
             index++;
-        if(index==imgList.length-1)
+        if(index==imgList.length)
         {
             dumpDB();
             db.close();
