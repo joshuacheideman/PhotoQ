@@ -9,13 +9,13 @@ var db = new sql.Database(dbFile);
 // Create a node-static server instance to serve the './public' folder
 //
 var file = new static.Server('./public');
-var index = 0;
 
 function dynamicQuery(url, response) {
 
     if (url.startsWith("/query?numList=")) {
         var numsplit = url.split("=");
         var numlist = numsplit[1];
+        var index = 0;
         var photoIndexes = numlist.split("+");
         for (var i = 0 ; i<photoIndexes.length;i++){
 
@@ -32,15 +32,20 @@ function dynamicQuery(url, response) {
                 }   
                 else
                 {
-                     var urlResponse = "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/"+rowData.fileName+"\n";
-                     response.write(urlResponse);
-                     index++;
+                     if(index<photoIndexes.length)
+                     {
+                        var urlResponse = "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/"+rowData.fileName+"\n";
+
+                        response.write(urlResponse);
+                        index++;    
+                     }
                      if(index==photoIndexes.length)
                      {
                         response.end();
                      }
                 }
             }
+            
         }
         else //do a bad query response
         {
