@@ -12,7 +12,7 @@ function DropCallback(err)
 	}
 	else
 	{
-		var create_cmd = "CREATE TABLE photoTags(idNum INTEGER UNIQUE NOT NULL PRIMARY KEY,fileName TEXT,landmark TEXT,tags TEXT)";
+		var create_cmd = "CREATE TABLE photoTags(idNum INTEGER UNIQUE NOT NULL PRIMARY KEY,fileName TEXT,width INTEGER, height INTEGER, landmark TEXT,tags TEXT)";
 		db.run(create_cmd,CreateCallback);
 	}
 }
