@@ -40,7 +40,44 @@ div#photoDisplay {
     margin: 20px;
 }
 
-img {
-    width: 100%;
+div.selectedControls {
+	display: block;
 }
 
+div.normalControls {
+  display: none;
+}
+
+/* Photo tile - position and size will be given by PhotoGallery */
+div.tile {
+backgroundColor: #eee;
+cursor: pointer;
+overflow: hidden; 
+float: left;
+position: relative;
+}
+
+/* Tag styling */
+p.tagText {
+left: 4px; 
+top: 4px; 
+position: absolute; 
+zIndex: 2;
+background-color: blue;
+padding: 5px;
+border-radius: 5px;
+color: white;
+word-break: break-all;
+}
+
+
+img {
+display: block;
+}
+
+/* so far nothing special when image selected */
+img.normal {
+}
+
+img.selected {
+}
