@@ -1,5 +1,6 @@
 var static = require('node-static');
 var http = require('http');
+//http.globalAgent.maxSockets = 1;
 var fs = require('fs');
 var sql = require("sqlite3").verbose();
 var dbFile = "PhotoQ.db";
@@ -15,37 +16,34 @@ function dynamicQuery(url, response) {
     if (url.startsWith("/query?numList=")) {
         var numsplit = url.split("=");
         var numlist = numsplit[1];
-        var index = 0;
         var photoIndexes = numlist.split("+");
-        for (var i = 0 ; i<photoIndexes.length;i++){
+        var selectstr = "SELECT * FROM photoTags WHERE idNum IN (";
+	var numstr = ""; 
+        for (let i = 0 ; i<photoIndexes.length;i++){
 
         if (!isNaN(photoIndexes[i]) && (photoIndexes[i] >= 0 && photoIndexes[i] <= 988))//get the image 
         {
-            response.writeHead(200, { "Content-Type": "text/plain" });
-            var selectstr = "SELECT fileName FROM photoTags WHERE idNum = " + photoIndexes[i];
-            db.get(selectstr,dataCallback);
-            function dataCallback(err,rowData)
-            {
-                if(err)
-                {
-                    console.log(err);
-                }   
-                else
-                {
-                     if(index<photoIndexes.length)
-                     {
-                        var urlResponse = "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/"+rowData.fileName+"\n";
-
-                        response.write(urlResponse);
-                        index++;    
-                     }
-                     if(index==photoIndexes.length)
-                     {
-                        response.end();
-                     }
-                }
-            }
-            
+	    if(i>=0&&i<photoIndexes.length-1)
+	    	numstr = numstr + photoIndexes[i]+",";
+	    if (i==photoIndexes.length-1)
+	    {
+		numstr = numstr + photoIndexes[i];
+		selectstr = selectstr + numstr+")";
+            	response.writeHead(200, { "Content-Type": "text/plain" });
+                db.all(selectstr,dataCallback);
+            	function dataCallback(err,arrayData)
+            	{
+                	if(err)
+                	{
+                    		console.log(err);
+                	}	   
+                	else
+                	{
+                        	response.write(JSON.stringify(arrayData));    
+                        	response.end();
+                	}
+            	}
+	    }    
         }
         else //do a bad query response
         {
