@@ -5,9 +5,9 @@ fs = require('fs');
 var sizeOf = require('image-size');
 var dbFile = "PhotoQ.db";
 var db = new sql.Database(dbFile);
-var data = fs.readFileSync("6whs.json");
+var data = fs.readFileSync("photoList.json");
 if(!data) {
-    console.log("cannot read 6whs.json");
+    console.log("cannot read photoList.json");
 }
 else {
     var listObj = JSON.parse(data);
