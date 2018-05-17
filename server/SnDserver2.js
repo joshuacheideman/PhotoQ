@@ -1,6 +1,6 @@
 var static = require('node-static');
 var http = require('http');
-//http.globalAgent.maxSockets = 1;
+http.globalAgent.maxSockets = 1;
 var fs = require('fs');
 var sql = require("sqlite3").verbose();
 var dbFile = "PhotoQ.db";

@@ -1,14 +1,3 @@
-// Global; will be replaced by a call to the server! 
-var photoURLArray=
-[
- { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/A%20Torre%20Manuelina.jpg"},
- { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/Uluru%20sunset1141.jpg" },
- { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/Sejong tomb 1.jpg"},
- { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/Serra%20da%20Capivara%20-%20Painting%207.JPG"},
- { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/Royal%20Palace%2c%20Rabat.jpg"},
- { url: "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/Red%20pencil%20urchin%20-%20Papahnaumokukea.jpg"}
- ];
-
 // Called when the user pushes the "submit" button 
 function photoByNumber() {
 
@@ -36,14 +25,13 @@ function photoByNumber() {
 function DisplayPhoto()
 {
 	var photoStatus = this.status;
-	var photoURLs = this.responseText;
-	var photoURL = photoURLs.split("\n");
+	var photoURLs = JSON.parse(this.responseText);
 	var display = document.getElementById("photoImg");
-	for(let i=0;i<photoURL.length;i++)
+	for(let i=0;i<photoURLs.length;i++)
 	{
 		if (photoStatus ==200)//If status is OK
 		{
-			console.log(photoURL[i]);
+			console.log(photoURLs[i].fileName);
 			//display.src = photoURL;
 		}
 		else if (photoStatus==400)//If bad query
