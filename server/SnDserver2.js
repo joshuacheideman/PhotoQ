@@ -39,6 +39,10 @@ function dynamicQuery(url, response) {
                 	}	   
                 	else
                 	{
+				for(let i =0;i<arrayData.length;i++)
+				{
+					arrayData[i].fileName ="http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/" +arrayData[i].fileName;
+				}
                         	response.write(JSON.stringify(arrayData));    
                         	response.end();
                 	}
