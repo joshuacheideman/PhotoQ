@@ -7,25 +7,25 @@
 <link rel="stylesheet" type="text/css" href="http://web.cs.ucdavis.edu/~amenta/s18/reset.css">
 <link rel="stylesheet" type="text/css" href="testWHS2.css">
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
-
+<div id="top">
 <header>
-<h1>Testing PhotoQ</h1>
+<h1>PHOTOQ</h1>
 </header>
+
 
 
 <main>
 <div id="query">
-<P>
-Load a photo by number:
-</p>
-
-<input id="num" placeholder="photo number"> 
-<button onclick="updateImages()">Submit</button>
+<input id="num" placeholder="photo number">
+    <button onclick="updateImages()"  class="material-icons">search </button> 
+</div>
 </div>
 <div id="react-container">
+<p id="noitems"> Nothing's been searched yet!<br><br>&emsp;&emsp;Use the search above</p>
 <div id="react"></div>
 </div>
 </main>

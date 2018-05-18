@@ -1,18 +1,19 @@
-
 body {
 	min-height: 100vh;  /* need this line to 
 					tell body to fill viewport */
 	font-family: 'Montserrat', sans-serif;
 	background-color: white;
 	display: flex;
-	flex-direction: column;
-	color: blue;
+	flex-direction:column;
+	color: #3a25bb;
+	width:100%;
      }
 
 header {
        text-align: center;
        padding: 10px;
-	  
+	   font-weight:700;
+	   font-size:25px;
 }
 
 
@@ -24,12 +25,25 @@ main {
 
 
 input {
-	border-style: solid;
-	border-radius: 5px;
+	box-sizing:border-box;
 	font-size: medium;
+	margin-right:-5px;
+	height: 30px;
+	width:60%;
+
 }
-
-
+button.material-icons{
+	margin-right:10px;
+	height:30px;
+	padding-left:2%;
+	color: #3a25bb;
+	background-color:white;
+	border-color:transparent;
+	border-style:inset;
+	box-sizing:border-box;
+	border:1px solid #aba8a8;
+	font-weight:700;
+}
 p {
 	font-size: medium;
 	margin: 10px;
@@ -74,6 +88,8 @@ word-break: break-all;
 
 img {
 display: block;
+margin-bottom:2%;
+padding-left:2%;
 }
 
 /* so far nothing special when image selected */
@@ -81,4 +97,31 @@ img.normal {
 }
 
 img.selected {
+}
+#query{
+	display:flex;
+	flex-direction:row;
+	margin-left:10%;
+	margin-top:1%;
+	align-items:center;
+	margin-bottom:3%;
+}
+#react-container{
+	background-color:#f4f4f4;
+	flex:1 0 auto;
+	align-items:center;
+	display:flex;
+	justify-content:center;
+}
+#top{
+	margin-top:1%;
+	display:flex;
+	flex-direction:row;
+}
+#noitems{
+	color:grey;
+	font-size:25px;
+}
+#react{
+	margin:5% 2% 5% 1%;
 }

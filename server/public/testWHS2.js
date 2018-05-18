@@ -117,23 +117,28 @@ var photos = [];
 	
 	const reactContainer = document.getElementById("react");
 	var reactApp = ReactDOM.render(React.createElement(App),reactContainer);
-	
+	var noitems = document.getElementById("noitems");
+	var reactcontainer= document.getElementById("react-container");	
 	/* Workaround for bug in gallery where it isn't properly arranged at init */
 	window.dispatchEvent(new Event('resize'));
 	function updateImages()
 	{
 	  var nums = document.getElementById("num").value;
 	
-	  if (!nums) return; // No query? Do nothing!
-	
+	  if (!nums){
+		return; // No query? Do nothing!
+	  }
 	  var xhr = new XMLHttpRequest();
 	  xhr.open("GET", "/query?numList=" + nums.replace(/ |,/g, "+")); // We want more input sanitization than this!
 	  xhr.addEventListener("load", (evt) => {
 		if (xhr.status == 200) {
+			noitems.style.display="none";
+			reactcontainer.style.alignItems="flex-start";
+			reactcontainer.style.display="block";
 			reactApp.setState({photos:JSON.parse(xhr.responseText)});
 			window.dispatchEvent(new Event('resize')); /* The world is held together with duct tape */
 		} else {
-			console.log("XHR Error!", xhr.responseText);
+			document.getElementById("num").value="You got a "+ xhr.responseText+". Try another input";
 		}
 	  } );
 	  xhr.send();
