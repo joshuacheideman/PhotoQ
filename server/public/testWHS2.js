@@ -120,7 +120,6 @@ var photos = [];
 	
 	/* Workaround for bug in gallery where it isn't properly arranged at init */
 	window.dispatchEvent(new Event('resize'));
-	
 	function updateImages()
 	{
 	  var nums = document.getElementById("num").value;

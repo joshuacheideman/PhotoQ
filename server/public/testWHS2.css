@@ -55,6 +55,7 @@ cursor: pointer;
 overflow: hidden; 
 float: left;
 position: relative;
+margin:20px;
 }
 
 /* Tag styling */
