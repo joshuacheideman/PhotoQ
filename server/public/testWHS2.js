@@ -91,12 +91,26 @@ var photos = [];
 	  }
 	
 	  render() {
-		return (
-		   React.createElement( Gallery, {photos: this.state.photos,
-		   onClick: this.selectTile, 
-		   ImageComponent: ImageTile} )
-		  );
+		if(document.documentElement.clientWidth>=700){
+			return (
+		   		React.createElement( Gallery, {photos: this.state.photos,
+		   		onClick: this.selectTile, 
+		   		ImageComponent: ImageTile
+				,columns:2} )
+			  );
+			}
+	  	
+		else
+		{
+			return (
+			React.createElement( Gallery, {photos: this.state.photos,
+			onClick: this.selectTile, 
+			ImageComponent: ImageTile
+			 ,columns:1} )
+		   );
+		}	  
 	  }
+	
 	}
 	
 	/* Finally, we actually run some code */
