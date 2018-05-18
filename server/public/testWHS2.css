@@ -11,14 +11,12 @@ body {
 
 header {
        text-align: center;
-       padding: 10px;
-	   font-weight:700;
-	   font-size:25px;
+       padding: 1.1%;
+	   font-weight:750;
+	   font-size:50px;
+	   font-style:italic;
+	   color:#314D7F;
 }
-
-
-
-
 main {
      flex: 1 0 auto;  /* the sticky footer trick without the footer */
 }
@@ -26,23 +24,26 @@ main {
 
 input {
 	box-sizing:border-box;
+	border: 1px solid #314D7F;
 	font-size: medium;
 	margin-right:-5px;
-	height: 30px;
+	height: 50px;
 	width:60%;
 
 }
 button.material-icons{
+	width:80px;
 	margin-right:10px;
-	height:30px;
-	padding-left:2%;
-	color: #3a25bb;
+	height:50px;
+	/*padding-left:2%;*/
+	color: #314D7F;
 	background-color:white;
 	border-color:transparent;
 	border-style:inset;
 	box-sizing:border-box;
-	border:1px solid #aba8a8;
+	border:1px solid #314D7F;
 	font-weight:700;
+	font-size:2.5em;
 }
 p {
 	font-size: medium;
@@ -119,8 +120,9 @@ img.selected {
 	flex-direction:row;
 }
 #noitems{
-	color:grey;
-	font-size:25px;
+	color:#909EB8;
+	font-size:50px;
+	padding-bottom:25px;
 }
 #react{
 	margin:5% 2% 5% 1%;
