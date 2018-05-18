@@ -144,3 +144,11 @@ var photos = [];
 	  xhr.send();
 	}
 	
+	const numNode = document.getElementById("num");
+	numNode.addEventListener("keydown", function(event) {
+			if (event.key === "Enter") {
+					event.preventDefault();
+					// Do more work
+					updateImages();
+			}
+	});
