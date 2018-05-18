@@ -39,11 +39,15 @@ function dynamicQuery(url, response) {
                 	}	   
                 	else
                 	{
+				let responseData=[];
 				for(let i =0;i<arrayData.length;i++)
 				{
-					arrayData[i].src ="http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/" +arrayData[i].fileName;
+					var src ="http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/" +arrayData[i].fileName;
+					var width = arrayData[i].width;
+					var height = arrayData[i].height;
+					responseData.push({src:src,width:width,height:height});
 				}
-                        	response.write(JSON.stringify(arrayData));    
+                        	response.write(JSON.stringify(responseData));    
                         	response.end();
                 	}
             	}
