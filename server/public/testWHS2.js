@@ -152,3 +152,17 @@ var photos = [];
 					updateImages();
 			}
 	});
+	var isMobile=false;
+	function resize()
+	{
+		if(document.documentElement.clientWidth>=700&&isMobile)
+		{
+			isMobile=false;
+			updateImages();
+		}
+		else if(!isMobile&&document.documentElement.clientWidth<700)
+		{
+			isMobile=true;
+			updateImages();
+		}
+	}
