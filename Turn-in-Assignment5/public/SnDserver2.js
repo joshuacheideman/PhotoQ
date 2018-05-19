@@ -25,6 +25,7 @@ function dynamicQuery(url, response) {
         {
 	    if(i>=0&&i<photoIndexes.length-1)
             numstr = numstr + photoIndexes[i]+",";
+        console.log(photoIndexes[i]);
 	    if (photoIndexes[i]&&i==photoIndexes.length-1&&!isNaN(photoIndexes[i])&& (photoIndexes[i] >= 0 && photoIndexes[i] <= 988))
 	    {
 		numstr = numstr + photoIndexes[i];
