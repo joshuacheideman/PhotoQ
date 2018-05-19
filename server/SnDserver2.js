@@ -25,7 +25,7 @@ function dynamicQuery(url, response) {
         {
 	    if(i>=0&&i<photoIndexes.length-1)
 	    	numstr = numstr + photoIndexes[i]+",";
-	    if (i==photoIndexes.length-1)
+	    if (i==photoIndexes.length-1&&!isNaN(photoIndexes[i]))
 	    {
 		numstr = numstr + photoIndexes[i];
 		selectstr = selectstr + numstr+")";
@@ -51,7 +51,14 @@ function dynamicQuery(url, response) {
                         	response.end();
                 	}
             	}
-	    }    
+        }
+        else
+        {
+            response.writeHead(400, { "Content-Type": "text/plain" });
+            response.write("Bad Query");
+            response.end();
+            break;
+        }    
         }
         else //do a bad query response
         {
