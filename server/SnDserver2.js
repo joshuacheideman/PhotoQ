@@ -21,12 +21,12 @@ function dynamicQuery(url, response) {
 	var numstr = ""; 
         for (let i = 0 ; i<photoIndexes.length;i++){
 
-        if (!isNaN(photoIndexes[i]) && (photoIndexes[i] >= 0 && photoIndexes[i] <= 988))//get the image 
+        if (photoIndexes[i]&&!isNaN(photoIndexes[i]) && (photoIndexes[i] >= 0 && photoIndexes[i] <= 988))//get the image 
         {
 	    if(i>=0&&i<photoIndexes.length-1)
             numstr = numstr + photoIndexes[i]+",";
         console.log(photoIndexes[i]);
-	    if (i!=""&&i==photoIndexes.length-1&&!isNaN(photoIndexes[i])&& (photoIndexes[i] >= 0 && photoIndexes[i] <= 988))
+	    if (photoIndexes[i]&&i==photoIndexes.length-1&&!isNaN(photoIndexes[i])&& (photoIndexes[i] >= 0 && photoIndexes[i] <= 988))
 	    {
 		numstr = numstr + photoIndexes[i];
 		selectstr = selectstr + numstr+")";
@@ -53,7 +53,7 @@ function dynamicQuery(url, response) {
                 	}
             	}
         }
-        else if(i==photoIndexes.length-1&&(isNan(photoIndexes[i])||i==""))
+        else if(i==photoIndexes.length-1&&(isNaN(photoIndexes[i])||photoIndexes[i]==""))
         {
             response.writeHead(400, { "Content-Type": "text/plain" });
             response.write("Bad Query");
