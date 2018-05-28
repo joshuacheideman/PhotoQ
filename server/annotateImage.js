@@ -5,6 +5,7 @@ var dbFile = "PhotoQ.db";
 var db = new sql.Database(dbFile);
 var fs = require('fs');
 var data = fs.readFileSync("photoList.json");
+
 if(!data){
 	console.log("Could not read file");
 }
@@ -13,8 +14,7 @@ else{
 	imgList=listObj.photoURLs;
 }
 //Will get stringified and put into the body of an HTTP request,below
-for(let i =0;i<imgList.length;i++)
-{
+let i = 0;
 	APIrequestObject = {
 	"requests":[
 	  {
@@ -24,12 +24,11 @@ for(let i =0;i<imgList.length;i++)
 		"features":[{"type": "LABEL_DETECTION","maxResults":6},{"type": "LANDMARK_DETECTION","maxResults":1}]
 		}
 	]
-	}	
+	}
 //URL containing the API key
-url= 'https://vision.googleapis.com/v1/images:annotate?key=';
-
+url= 'https://vision.googleapis.com/v1/images:annotate?key=MY_KEY"
 //function to send off request to the API
-function annotateImage() {
+        function annotateImage() {
 	//The code that makes a request to the API
 	//Uses the Node request module which packs up and sends off
 	//an HTTP message containing the request to the API server
@@ -51,12 +50,18 @@ function annotateImage() {
 			console.log(body);
 		} else{
 			APIresponseJSON = body.responses[0];
-			console.log(APIresponseJSON);
+			//console.log(APIresponseJSON);
 			var update_cmd="UPDATE photoTags SET ";
 			if(APIresponseJSON.landmarkAnnotations)
 			{
-				//console.log(APIresponseJSON.landmarkAnnotations[0].description);
-				update_cmd=update_cmd+"landmark = \" "+APIresponseJSON.landmarkAnnotations[0].description+"\"";
+				console.log(APIresponseJSON.landmarkAnnotations[0].description);
+				if(!(APIresponseJSON.landmarkAnnotations[0].description===undefined))
+				{
+				update_cmd=update_cmd+"landmark = \""+APIresponseJSON.landmarkAnnotations[0].description.replace(/"/g,"")+"\"";
+				}
+				else{
+					update_cmd=update_cmd+"landmark=\" \"";
+				}
 			}
 			else{
 				update_cmd=update_cmd+"landmark= \" \"";
@@ -71,7 +76,7 @@ function annotateImage() {
 				update_cmd=update_cmd+"tags = \" \" ";
 			}            
 			update_cmd=update_cmd+" WHERE idNum = "+ i;
-			//console.log(update_cmd);
+			console.log(update_cmd);
 			db.run(update_cmd,DataCallback);
 		}	
 	} //end callback function
@@ -79,7 +84,6 @@ function annotateImage() {
 
 	//Do it!
 	annotateImage();
-}
 var index=0;
 function DataCallback(err)
 {
@@ -90,8 +94,26 @@ function DataCallback(err)
 	else
 	{
 		if(index<imgList.length)
+		{
 			index++;
-		if(index==imgList.length)
+			i++;
+			console.log(i);
+			if(i<imgList.length)
+			{
+			APIrequestObject = {
+				"requests":[
+	  			{
+					"image":{
+		  				"source":{"imageUri":imgList[i]}
+		  				},
+					"features":[{"type": "LABEL_DETECTION","maxResults":6},{"type": "LANDMARK_DETECTION","maxResults":1}]
+				}
+	]
+	}
+			annotateImage();
+			}
+		}
+		else if(index==imgList.length)
 		{
 			dumpDB();
 			db.close();
