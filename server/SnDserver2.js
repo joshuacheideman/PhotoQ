@@ -25,14 +25,13 @@ function dynamicQuery(url, response) {
         {
 	    if(i>=0&&i<photoIndexes.length-1)
 	    {
-		var label = decodeURIComponent(photoIndexes[i]);
-            keystr = "(landmark = \""+ label+"\" OR tags LIKE \"%"+label+"%\") AND";
+		var label = decodeURIComponent(photoIndexes[i])
+            keystr = "( LOWER(photoTags.landmark)LIKE \"%"+ label+"%\" OR tags LIKE \"%"+label+"%\") AND";
 	    }
 	    if (photoIndexes[i]&&i==photoIndexes.length-1)
 	    {
-		console.log(photoIndexes[i]);
 		var label = decodeURIComponent(photoIndexes[i]);
-		keystr = "(landmark = \""+ label+"\" OR tags LIKE \"%"+label+"%\")"; 
+		keystr = "(LOWER(photoTags.landmark) LIKE \"%"+ label+"%\" OR tags LIKE \"%"+label+"%\")"; 
 		selectstr = selectstr + keystr;
             	response.writeHead(200, { "Content-Type": "text/plain" });
                 db.all(selectstr,dataCallback);
@@ -54,11 +53,12 @@ function dynamicQuery(url, response) {
 				}
 				if(responseData.length==0)
 				{
-					response.write("There were no photos satisfying this query.");
+					responseData.push({message:message = "There were no photos satisfying this query."});
 				}
 				else{
-                        	response.write("These are all of the photos satisfying this query\n"+JSON.stringify(responseData));
-				}    
+                        		responseData.forEach(function(obj){obj.message="These are all of the photos satisfying this query\n"});
+				}
+				response.write(JSON.stringify(responseData));
                         	response.end();
                 	}
             	}
