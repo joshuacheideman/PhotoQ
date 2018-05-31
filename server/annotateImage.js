@@ -113,7 +113,7 @@ function DataCallback(err)
 			annotateImage();
 			}
 		}
-		else if(index==imgList.length)
+		if(index==imgList.length)
 		{
 			dumpDB();
 			db.close();

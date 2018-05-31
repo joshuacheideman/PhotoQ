@@ -123,13 +123,13 @@ var photos = [];
 	window.dispatchEvent(new Event('resize'));
 	function updateImages()
 	{
-	  var nums = document.getElementById("num").value;
+	  var keys = document.getElementById("key").value;
 	
-	  if (!nums){
+	  if (!keys){
 		return; // No query? Do nothing!
 	  }
 	  var xhr = new XMLHttpRequest();
-	  xhr.open("GET", "/query?numList=" + nums.replace(/ |,/g, "+")); // We want more input sanitization than this!
+	  xhr.open("GET", "/query?keyList=" + encodeURIComponent(keys.replace(/,/g, "+"))); // We want more input sanitization than this!
 	  xhr.addEventListener("load", (evt) => {
 		if (xhr.status == 200) {
 			noitems.style.display="none";
@@ -138,13 +138,13 @@ var photos = [];
 			reactApp.setState({photos:JSON.parse(xhr.responseText)});
 			window.dispatchEvent(new Event('resize')); /* The world is held together with duct tape */
 		} else {
-			document.getElementById("num").value="You got a "+ xhr.responseText+". Try another input";
+			document.getElementById("key").value="You got a "+ xhr.responseText+". Try another input";
 		}
 	  } );
 	  xhr.send();
 	}
 	
-	const numNode = document.getElementById("num");
+	const keyNode = document.getElementById("key");
 	numNode.addEventListener("keydown", function(event) {
 			if (event.key === "Enter") {
 					event.preventDefault();

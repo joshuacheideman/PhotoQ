@@ -13,23 +13,27 @@ var file = new static.Server('./public');
 
 function dynamicQuery(url, response) {
 
-    if (url.startsWith("/query?numList=")) {
-        var numsplit = url.split("=");
-        var numlist = numsplit[1];
-        var photoIndexes = numlist.split("+");
-        var selectstr = "SELECT * FROM photoTags WHERE idNum IN (";
-	var numstr = ""; 
+    if (url.startsWith("/query?keyList=")) {
+        var keysplit = url.split("=");
+        var keylist = decodeURIComponent(keysplit[1]);
+        var photoIndexes = keylist.split("+");
+        var selectstr = "SELECT * FROM photoTags WHERE ";
+	var keystr = ""; 
         for (let i = 0 ; i<photoIndexes.length;i++){
 
-        if (photoIndexes[i]&&!isNaN(photoIndexes[i]) && (photoIndexes[i] >= 0 && photoIndexes[i] <= 988))//get the image 
+        if (photoIndexes[i]&&/^[a-z]/.test(photoIndexes[i]))//get the image 
         {
 	    if(i>=0&&i<photoIndexes.length-1)
-            numstr = numstr + photoIndexes[i]+",";
-        console.log(photoIndexes[i]);
-	    if (photoIndexes[i]&&i==photoIndexes.length-1&&!isNaN(photoIndexes[i])&& (photoIndexes[i] >= 0 && photoIndexes[i] <= 988))
 	    {
-		numstr = numstr + photoIndexes[i];
-		selectstr = selectstr + numstr+")";
+		var label = decodeURIComponent(photoIndexes[i]);
+            keystr = "(landmark = \""+ label+"\" OR tags LIKE \"%"+label+"%\") AND";
+	    }
+	    if (photoIndexes[i]&&i==photoIndexes.length-1)
+	    {
+		console.log(photoIndexes[i]);
+		var label = decodeURIComponent(photoIndexes[i]);
+		keystr = "(landmark = \""+ label+"\" OR tags LIKE \"%"+label+"%\")"; 
+		selectstr = selectstr + keystr;
             	response.writeHead(200, { "Content-Type": "text/plain" });
                 db.all(selectstr,dataCallback);
             	function dataCallback(err,arrayData)
@@ -48,18 +52,26 @@ function dynamicQuery(url, response) {
 					var height = arrayData[i].height;
 					responseData.push({src:src,width:width,height:height});
 				}
-                        	response.write(JSON.stringify(responseData));    
+				if(responseData.length==0)
+				{
+					response.write("There were no photos satisfying this query.");
+				}
+				else{
+                        	response.write("These are all of the photos satisfying this query\n"+JSON.stringify(responseData));
+				}    
                         	response.end();
                 	}
             	}
         }
-        else if(i==photoIndexes.length-1&&(isNaN(photoIndexes[i])||photoIndexes[i]==""))
+	/*
+        else if(i==photoIndexes.length-1||photoIndexes[i]=="")
         {
             response.writeHead(400, { "Content-Type": "text/plain" });
             response.write("Bad Query");
             response.end();
             break;
-        }    
+        } 
+	*/   
         }
         else //do a bad query response
         {
