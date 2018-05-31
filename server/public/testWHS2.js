@@ -84,8 +84,9 @@ var photos = [];
 	  }
 	
 	  selectTile(event, obj) {
+		
 		console.log("in onclick!", obj);
-		let photos = this.state.photos;
+		let photos= this.state.photos;
 		photos[obj.index].selected = !photos[obj.index].selected;
 		this.setState({ photos: photos });
 	  }
@@ -93,7 +94,7 @@ var photos = [];
 	  render() {
 		if(document.documentElement.clientWidth>=700){
 			return (
-		   		React.createElement( Gallery, {photos: this.state.photos,
+		   		React.createElement( Gallery, {photos: this.state.photos.slice(0,12),
 		   		onClick: this.selectTile, 
 		   		ImageComponent: ImageTile
 				,columns:2} )
