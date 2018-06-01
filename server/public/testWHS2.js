@@ -104,7 +104,7 @@ var photos = [];
 		else
 		{
 			return (
-			React.createElement( Gallery, {photos: this.state.photos,
+			React.createElement( Gallery, {photos: this.state.photos.slice(0,12),
 			onClick: this.selectTile, 
 			ImageComponent: ImageTile
 			 ,columns:1} )
