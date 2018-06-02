@@ -57,7 +57,12 @@ div#photoDisplay {
 }
 
 div.selectedControls {
-	display: block;
+	display: flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	position:absolute;
+	justify-content:center;
+	align-items:center;
 }
 
 div.normalControls {
@@ -71,6 +76,10 @@ cursor: pointer;
 overflow: hidden; 
 float: left;
 position: relative;
+display:flex;
+align-items:center;
+justify-content:center;
+align-content:center;
 margin:20px;
 }
 
@@ -78,10 +87,9 @@ margin:20px;
 p.tagText {
 left: 4px; 
 top: 4px; 
-position: absolute; 
-zIndex: 2;
-background-color: blue;
-padding: 5px;
+background-color: #86b2b5;
+padding: 2%;
+padding-right: 10%;
 border-radius: 5px;
 color: white;
 word-break: break-all;
