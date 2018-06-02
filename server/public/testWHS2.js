@@ -21,17 +21,22 @@ var photos = [];
 		// remember input vars in closure
 			var _selected = this.props.selected;
 			var _src = this.props.src;
+			var _tags = this.props.tags;
+			var _landmark=this.props.landmarks;
 			// parse image src for photo name
+			var tagList = _tags.split(",");
 		var photoName = _src.split("/").pop();
 		photoName = photoName.split('%20').join(' ');
 	
-			return ( React.createElement('div', 
-		  {className: _selected ? 'selectedControls' : 'normalControls'},  
-			 // div contents - so far only one tag
-				  React.createElement(Tag,
-			 { text: photoName })
-			)// createElement div
-		)// return
+		var args=[];
+		args.push('div');//Create element div
+		args.push({className:_selected ? 'selectedControls' : 'normalControls'});
+		
+		for(let i=0;i<tagList.length;i++)
+		{
+			args.push(React.createElement(Tag,{text: tagList[i],key:tagList[i]+i}));
+		}
+		return( React.createElement.apply(null,args));// return
 		} // render
 	};
 	
@@ -60,7 +65,10 @@ var photos = [];
 			 // contents of div - the Controls and an Image
 			React.createElement(TileControl,
 				{selected: _selected, 
-				 src: _photo.src}),
+				 src: _photo.src,
+				 tags:_photo.tags,
+				 landmarks:_photo.landmarks
+				}),
 			React.createElement('img',
 				{className: _selected ? 'selected' : 'normal', 
 						 src: _photo.src, 
@@ -146,7 +154,7 @@ var photos = [];
 	}
 	
 	const keyNode = document.getElementById("key");
-	numNode.addEventListener("keydown", function(event) {
+	keyNode.addEventListener("keydown", function(event) {
 			if (event.key === "Enter") {
 					event.preventDefault();
 					// Do more work

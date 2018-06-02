@@ -48,8 +48,10 @@ function dynamicQuery(url, response) {
 				{
 					var src ="http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/" +arrayData[i].fileName;
 					var width = arrayData[i].width;
-					var height = arrayData[i].height;
-					responseData.push({src:src,width:width,height:height});
+                    var height = arrayData[i].height;
+                    var tags = arrayData[i].tags;
+                    var landmarks = arrayData[i].landmark;
+					responseData.push({src:src,width:width,height:height,tags:tags,landmarks:landmarks});
 				}
 				if(responseData.length==0)
 				{
