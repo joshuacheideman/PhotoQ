@@ -9,7 +9,8 @@ var photos = [];
 		render () {
 		return React.createElement('p',  // type
 			{ className: 'tagText'}, // properties
-		   this.props.text);  // contents
+		   this.props.text,  // contents
+		React.createElement('button',{className:'xButton'},"x"));
 		}
 	};
 	
