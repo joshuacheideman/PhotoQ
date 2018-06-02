@@ -93,6 +93,16 @@ border-radius: 5px;
 color: white;
 word-break: break-all;
 }
+/* Add Tag */
+p.AddTag{
+border-color:#86b2b5;
+border-width:1.5px;
+height:25px;
+width:100px;
+background-color:transparent;
+border-style:solid;
+border-radius:5px;
+}
 /* Style the X button */
 button.xButton{
 margin-left: 15px;
@@ -101,7 +111,15 @@ background-color:transparent;
 color:white;
 font-size:15px;
 }
-
+/* Style the plus Button */
+button.addButton{
+background-color:transparent;
+border:none;
+color:#86b2b5;
+position: relative;
+left: 80px;
+top: 4px;
+}
 img {
 display: block;
 margin-bottom:2%;

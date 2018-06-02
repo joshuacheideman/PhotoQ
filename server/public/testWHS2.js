@@ -14,6 +14,13 @@ var photos = [];
 		}
 	};
 	
+	class AddTag extends React.Component {
+		render(){
+		return React.createElement('p',//type
+			{className: 'AddTag'},//properties
+			React.createElement('button',{className:'addButton'},"+"));//contents
+		}
+	};
 	
 	// A react component for controls on an image tile
 	class TileControl extends React.Component {
@@ -37,6 +44,7 @@ var photos = [];
 		{
 			args.push(React.createElement(Tag,{text: tagList[i],key:tagList[i]+i}));
 		}
+		args.push(React.createElement(AddTag,{key:_src}));
 		return( React.createElement.apply(null,args));// return
 		} // render
 	};
