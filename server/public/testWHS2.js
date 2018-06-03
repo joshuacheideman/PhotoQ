@@ -7,44 +7,75 @@ var photos = [];
 	class Tag extends React.Component {
 	
 		render () {
+		var _onClick = this.props.onClick;
+		var key = this.props.id;
 		return React.createElement('p',  // type
 			{ className: 'tagText'}, // properties
 		   this.props.text,  // contents
-		React.createElement('button',{className:'xButton'},"x"));
+		React.createElement('button',{className:'xButton',onClick: function onClick(e){
+		console.log("Tag onClick");
+		e.stopPropagation(); //not all ancestors
+		_onClick(e,key);
+	}},"x"));
 		}
 	};
 	
 	class AddTag extends React.Component {
 		render(){
+		var _onClick = this.props.onClick
 		return React.createElement('p',//type
 			{className: 'AddTag'},//properties
-			React.createElement('button',{className:'addButton'},"+"));//contents
+			React.createElement('button',{className:'addButton',onClick:function onClick(e){
+			console.log("AddTag onClick");
+			e.stopPropagation();//not all ancestors
+			_onClick(e,this.key);			
+}},"+"));//contents
 		}
 	};
 	
 	// A react component for controls on an image tile
 	class TileControl extends React.Component {
-	
+		constructor(props)
+		{
+			super(props);
+			this.state = {tags:this.props.tags.split(",").map(x =>JSON.parse( "{\"name\":\""+x+"\"}"))};
+			this.addTags = this.addTags.bind(this);
+			this.deleteTags = this.deleteTags.bind(this);
+		}
+		addTags(event,obj)
+		{
+			
+		}
+		deleteTags(event,key)
+		{
+			let tags =this.state.tags;	
+			let tag = tags.find(x=>x.key === key);//find matching key in our tag object
+			let index = tags.indexOf(tag);
+			tags.splice(index,1);//get rid of this element
+			this.setState({tags:tags});
+		}
 		render () {
+		var args=[];
 		// remember input vars in closure
 			var _selected = this.props.selected;
 			var _src = this.props.src;
-			var _tags = this.props.tags;
+			var _tags = this.state.tags;
+			console.log(_tags);
 			var _landmark=this.props.landmarks;
 			// parse image src for photo name
-			var tagList = _tags.split(",");
 		var photoName = _src.split("/").pop();
 		photoName = photoName.split('%20').join(' ');
 	
-		var args=[];
 		args.push('div');//Create element div
 		args.push({className:_selected ? 'selectedControls' : 'normalControls'});
 		
-		for(let i=0;i<tagList.length;i++)
+		for(let i=0;i<_tags.length;i++)
 		{
-			args.push(React.createElement(Tag,{text: tagList[i],key:tagList[i]+i}));
+			args.push(React.createElement(Tag,{text: _tags[i].name,id:_tags[i].name+i,onClick: this.deleteTags}));
+			this.state.tags[i].key = _tags[i].name+i;
 		}
-		args.push(React.createElement(AddTag,{key:_src}));
+		args.push(React.createElement(AddTag,{key:"NewTag",id:"NewTag",onClick: this.addTags}));
+		//console.log(args);
 		return( React.createElement.apply(null,args));// return
 		} // render
 	};
