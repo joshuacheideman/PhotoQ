@@ -117,8 +117,15 @@ background-color:transparent;
 border:none;
 color:#86b2b5;
 position: relative;
-left: 80px;
-top: 4px;
+left: 10px;
+}
+/* Style text input for addButton*/
+input.addText{
+border:none;
+height:100%;
+background-color:transparent;
+width:80%;
+color:white;
 }
 img {
 display: block;

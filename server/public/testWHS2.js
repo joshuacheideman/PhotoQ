@@ -23,12 +23,13 @@ var photos = [];
 	class AddTag extends React.Component {
 		render(){
 		var _onClick = this.props.onClick
+		var key = this.props.id;
 		return React.createElement('p',//type
 			{className: 'AddTag'},//properties
-			React.createElement('button',{className:'addButton',onClick:function onClick(e){
+			React.createElement('input',{className:'addText',id:key+this.props.index,onClick: function(e){e.stopPropagation();}}),React.createElement('button',{className:'addButton',onClick:function onClick(e){
 			console.log("AddTag onClick");
 			e.stopPropagation();//not all ancestors
-			_onClick(e,this.key);			
+			_onClick(e,key);			
 }},"+"));//contents
 		}
 	};
@@ -42,9 +43,12 @@ var photos = [];
 			this.addTags = this.addTags.bind(this);
 			this.deleteTags = this.deleteTags.bind(this);
 		}
-		addTags(event,obj)
-		{
-			
+		addTags(event,key)
+		{	
+			let tags = this.state.tags;
+			let name = document.getElementById(key+this.props.index);
+			tags.push(JSON.parse("{\"name\":\""+name.value+"\""+",\"key\":\""+name.value+tags.length+"\"}"));
+			this.setState({tag:tags});
 		}
 		deleteTags(event,key)
 		{
@@ -60,7 +64,6 @@ var photos = [];
 			var _selected = this.props.selected;
 			var _src = this.props.src;
 			var _tags = this.state.tags;
-			console.log(_tags);
 			var _landmark=this.props.landmarks;
 			// parse image src for photo name
 		var photoName = _src.split("/").pop();
@@ -74,7 +77,8 @@ var photos = [];
 			args.push(React.createElement(Tag,{text: _tags[i].name,id:_tags[i].name+i,onClick: this.deleteTags}));
 			this.state.tags[i].key = _tags[i].name+i;
 		}
-		args.push(React.createElement(AddTag,{key:"NewTag",id:"NewTag",onClick: this.addTags}));
+		if(_tags.length<=6)//can only have 7 tags at one time
+		args.push(React.createElement(AddTag,{key:"NewTag",id:"NewTag",index:this.props.index,onClick: this.addTags}));
 		//console.log(args);
 		return( React.createElement.apply(null,args));// return
 		} // render
@@ -107,7 +111,8 @@ var photos = [];
 				{selected: _selected, 
 				 src: _photo.src,
 				 tags:_photo.tags,
-				 landmarks:_photo.landmarks
+				 landmarks:_photo.landmarks,
+				index:_index
 				}),
 			React.createElement('img',
 				{className: _selected ? 'selected' : 'normal', 
