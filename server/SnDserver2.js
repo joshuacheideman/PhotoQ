@@ -12,77 +12,104 @@ var db = new sql.Database(dbFile);
 var file = new static.Server('./public');
 
 function dynamicQuery(url, response) {
-
+    console.log("INSIDE")
     if (url.startsWith("/query?keyList=")) {
         var keysplit = url.split("=");
         var keylist = decodeURIComponent(keysplit[1]);
+        console.log("INSDIE2")
         var photoIndexes = keylist.split("+");
         var selectstr = "SELECT * FROM photoTags WHERE ";
-	var keystr = ""; 
-        for (let i = 0 ; i<photoIndexes.length;i++){
-
-        if (photoIndexes[i]&&/^[a-z]/.test(photoIndexes[i]))//get the image 
-        {
-	    if(i>=0&&i<photoIndexes.length-1)
-	    {
-		var label = decodeURIComponent(photoIndexes[i])
-            keystr = "( LOWER(photoTags.landmark)LIKE \"%"+ label+"%\" OR tags LIKE \"%"+label+"%\") AND";
-	    }
-	    if (photoIndexes[i]&&i==photoIndexes.length-1)
-	    {
-		var label = decodeURIComponent(photoIndexes[i]);
-		keystr = "(LOWER(photoTags.landmark) LIKE \"%"+ label+"%\" OR tags LIKE \"%"+label+"%\")"; 
-		selectstr = selectstr + keystr;
-            	response.writeHead(200, { "Content-Type": "text/plain" });
-                db.all(selectstr,dataCallback);
-            	function dataCallback(err,arrayData)
-            	{
-                	if(err)
-                	{
-                    		console.log(err);
-                	}	   
-                	else
-                	{
-				let responseData=[];
-				for(let i =0;i<arrayData.length;i++)
-				{
-					var src ="http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/" +arrayData[i].fileName;
-					var width = arrayData[i].width;
-                    var height = arrayData[i].height;
-                    var tags = arrayData[i].tags;
-                    var landmarks = arrayData[i].landmark;
-					responseData.push({src:src,width:width,height:height,tags:tags,landmarks:landmarks});
-				}
-				if(responseData.length==0)
-				{
-					responseData.push({message:message = "There were no photos satisfying this query."});
-				}
-				else{
-                        		responseData.forEach(function(obj){obj.message="These are all of the photos satisfying this query\n"});
-				}
-				response.write(JSON.stringify(responseData));
-                        	response.end();
-                	}
-            	}
-        }
-	/*
-        else if(i==photoIndexes.length-1||photoIndexes[i]=="")
-        {
-            response.writeHead(400, { "Content-Type": "text/plain" });
-            response.write("Bad Query");
-            response.end();
-            break;
-        } 
-	*/   
-        }
-        else //do a bad query response
-        {
-            response.writeHead(400, { "Content-Type": "text/plain" });
-            response.write("Bad Query");
-            response.end();
-            break;
+        var keystr = "";
+        for (let i = 0; i < photoIndexes.length; i++) {
+            if (photoIndexes[i] && /^[a-z]/.test(photoIndexes[i]))//get the image 
+            {
+                console.log("HELLO")
+                if (i >= 0 && i < photoIndexes.length - 1) {
+                    var label = decodeURIComponent(photoIndexes[i])
+                    keystr = "( LOWER(photoTags.landmark)LIKE \"%" + label + "%\" OR tags LIKE \"%" + label + "%\") AND";
+                    console.log("FIRST")
+                    console.log(keystr)
+                }
+                if (photoIndexes[i] && i == photoIndexes.length - 1) {
+                    var label = decodeURIComponent(photoIndexes[i]);
+                    keystr = "(LOWER(photoTags.landmark) LIKE \"%" + label + "%\" OR tags LIKE \"%" + label + "%\")";
+                    console.log("SECOND")
+                    console.log(keystr)
+                    selectstr = selectstr + keystr;
+                    response.writeHead(200, { "Content-Type": "text/plain" });
+                    db.all(selectstr, dataCallback);
+                    function dataCallback(err, arrayData) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            let responseData = [];
+                            console.log(arrayData)
+                            for (let i = 0; i < arrayData.length; i++) {
+                                var id = arrayData[i].idNum;
+                                var src = "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/" + arrayData[i].fileName;
+                                var width = arrayData[i].width;
+                                var height = arrayData[i].height;
+                                var tags = arrayData[i].tags;
+                                var landmarks = arrayData[i].landmark;
+                                responseData.push({ id: id, src: src, width: width, height: height, tags: tags, landmarks: landmarks });
+                            }
+                            if (responseData.length == 0) {
+                                responseData.push({ message: message = "There were no photos satisfying this query." });
+                            }
+                            else {
+                                responseData.forEach(function (obj) { obj.message = "These are all of the photos satisfying this query\n" });
+                            }
+                            response.write(JSON.stringify(responseData));
+                            response.end();
+                        }
+                    }
+                }
+                /*
+                    else if(i==photoIndexes.length-1||photoIndexes[i]=="")
+                    {
+                        response.writeHead(400, { "Content-Type": "text/plain" });
+                        response.write("Bad Query");
+                        response.end();
+                        break;
+                    } 
+                */
+            }
+            else //do a bad query response
+            {
+                console.log("BAD")
+                response.writeHead(400, { "Content-Type": "text/plain" });
+                response.write("Bad Query");
+                response.end();
+                break;
+            }
         }
     }
+    if (url.startsWith("/query?tag=")) {
+        var tagsplit = url.split("=");
+        var tag = decodeURIComponent(tagsplit[1]);
+        console.log(tag);
+        var split_props = tag.split(",");
+        console.log(split_props)
+        var idNum = split_props.splice(0,1);
+        var selectstr = "SELECT tags FROM photoTags WHERE idNum=" + idNum;
+        response.writeHead(200, { "Content-Type": "text/plain" });
+        db.all(selectstr, dataCallback);
+        function dataCallback(err, arrayData) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                let responseData = []
+                var arrayDataObj = arrayData[0];
+                var tags = arrayDataObj.tags;
+
+                // Update Tag with SET
+                var updateStr = "UPDATE photoTags SET tags='" + split_props.join() + "' WHERE idNum='" + idNum + "'";
+                console.log(updateStr);
+                db.all(updateStr);
+            }
+        }
     }
 }
 
@@ -111,4 +138,4 @@ function handler(request, response) {
 var server = http.createServer(handler);
 
 // fill in YOUR port number!
-server.listen("50600");
+server.listen("59655");
