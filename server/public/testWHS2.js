@@ -9,11 +9,16 @@ var photos = [];
 		render () {
 		var _onClick = this.props.onClick;
 		var key = this.props.id;
+		var _numId = this.props.numId;
+		var _text = this.props.text;
 		return React.createElement('p',  // type
 			{ className: 'tagText'}, // properties
 		   this.props.text,  // contents
 		React.createElement('button',{className:'xButton',onClick: function onClick(e){
 		console.log("Tag onClick");
+		console.log("$$$$$$")
+		console.log(_numId)
+		addDelTag(_numId, "delete", _text);
 		e.stopPropagation(); //not all ancestors
 		_onClick(e,key);
 	}},"x"));
@@ -61,7 +66,10 @@ var photos = [];
 		render () {
 		var args=[];
 		// remember input vars in closure
+		// console.log("$$$$$$$$")
+		// console.log(this.props)
 			var _selected = this.props.selected;
+			var _numId = this.props.numId;
 			var _src = this.props.src;
 			var _tags = this.state.tags;
 			var _landmark=this.props.landmarks;
@@ -74,7 +82,7 @@ var photos = [];
 		
 		for(let i=0;i<_tags.length;i++)
 		{
-			args.push(React.createElement(Tag,{text: _tags[i].name,id:_tags[i].name+i,onClick: this.deleteTags}));
+			args.push(React.createElement(Tag,{numId: _numId, text: _tags[i].name,id:_tags[i].name+i,onClick: this.deleteTags}));
 			this.state.tags[i].key = _tags[i].name+i;
 		}
 		if(_tags.length<=6)//can only have 7 tags at one time
@@ -94,13 +102,14 @@ var photos = [];
 		var _index = this.props.index;
 		var _photo = this.props.photo;
 		var _selected = _photo.selected; // this one is just for readability
+		var _numId = this.props.photo.id;
 	
 		return (
 			React.createElement('div', 
 				{style: {margin: this.props.margin, width: _photo.width},
 				 className: 'tile',
 							 onClick: function onClick(e) {
-					console.log("tile onclick");
+					// console.log("tile onclick");
 					// call Gallery's onclick
 					return _onClick (e, 
 							 { index: _index, photo: _photo }) 
@@ -108,7 +117,9 @@ var photos = [];
 			 }, // end of props of div
 			 // contents of div - the Controls and an Image
 			React.createElement(TileControl,
-				{selected: _selected, 
+				{
+				 numId: _numId,
+				 selected: _selected, 
 				 src: _photo.src,
 				 tags:_photo.tags,
 				 landmarks:_photo.landmarks,
@@ -145,6 +156,7 @@ var photos = [];
 	  }
 	
 	  render() {
+		console.log(this.state.photos)
 		if(document.documentElement.clientWidth>=700){
 			return (
 		   		React.createElement( Gallery, {photos: this.state.photos.slice(0,12),
@@ -184,6 +196,7 @@ var photos = [];
 	  }
 	  var xhr = new XMLHttpRequest();
 	  xhr.open("GET", "/query?keyList=" + encodeURIComponent(keys.replace(/,/g, "+"))); // We want more input sanitization than this!
+	  console.log("/query?keyList=" + encodeURIComponent(keys.replace(/,/g, "+")))
 	  xhr.addEventListener("load", (evt) => {
 		if (xhr.status == 200) {
 			noitems.style.display="none";
@@ -219,4 +232,25 @@ var photos = [];
 			isMobile=true;
 			updateImages();
 		}
+	}
+
+	function addDelTag(id, tag_op, tag_actual)
+	{
+	  var xhr = new XMLHttpRequest();
+	  tag = String(id) + "," + tag_op + "," + tag_actual;
+	  console.log(tag)
+	  xhr.open("GET", "/query?tag=" + encodeURIComponent(tag)); // We want more input sanitization than this!
+	  console.log("/query?tag=" + encodeURIComponent(tag))
+	  xhr.addEventListener("load", (evt) => {
+		if (xhr.status == 200) {
+			noitems.style.display="none";
+			reactcontainer.style.alignItems="flex-start";
+			reactcontainer.style.display="block";
+			reactApp.setState({photos:JSON.parse(xhr.responseText)});
+			window.dispatchEvent(new Event('resize')); /* The world is held together with duct tape */
+		} else {
+			document.getElementById("key").value="You got a "+ xhr.responseText+". Try another input";
+		}
+	  } );
+	  xhr.send();
 	}
