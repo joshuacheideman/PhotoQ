@@ -191,6 +191,7 @@ var photos = [];
 	function updateImages()
 	{
 	  var keys = document.getElementById("key").value;
+
 	
 	  if (!keys){
 		return; // No query? Do nothing!
@@ -255,3 +256,29 @@ var photos = [];
 	  } );
 	  xhr.send();
 	}
+
+function checkInput() {
+	var keys = document.getElementById("key").value;
+	console.log(keys.length)
+	if (keys.length < 1) {
+		return;
+	}
+
+	console.log("GREATER THAN 2");
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", "/query?autocomplete=" + encodeURIComponent(keys)); // We want more input sanitization than this!
+	console.log("/query?autocomplete=" + encodeURIComponent(keys))
+	xhr.addEventListener("load", (evt) => {
+		if (xhr.status == 200) {
+			noitems.style.display = "none";
+			reactcontainer.style.alignItems = "flex-start";
+			reactcontainer.style.display = "block";
+			reactApp.setState({ photos: JSON.parse(xhr.responseText) });
+			window.dispatchEvent(new Event('resize')); /* The world is held together with duct tape */
+		} else {
+			document.getElementById("key").value = "You got a " + xhr.responseText + ". Try another input";
+		}
+	});
+	xhr.send();
+}

@@ -10,6 +10,7 @@ var db = new sql.Database(dbFile);
 // Create a node-static server instance to serve the './public' folder
 //
 var file = new static.Server('./public');
+var auto = require("./makeTagTable");
 
 function dynamicQuery(url, response) {
     console.log("INSIDE")
@@ -109,6 +110,19 @@ function dynamicQuery(url, response) {
                 console.log(updateStr);
                 db.all(updateStr);
             }
+        }
+    }
+    if(url.startsWith("/query?autocomplete="))
+    {
+        var tagsplit = url.split("=");
+        var tag = decodeURIComponent(tagsplit[1]);
+        console.log(tag);
+
+        var tagTable = {};   // global
+        auto.makeTagTable(tagTableCallback);
+        function tagTableCallback(data) {
+        tagTable = data;
+        console.log(tagTable.tag.tags)
         }
     }
 }
