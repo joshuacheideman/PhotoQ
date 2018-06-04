@@ -10,15 +10,11 @@ var photos = [];
 		var _onClick = this.props.onClick;
 		var key = this.props.id;
 		var _numId = this.props.numId;
-		var _text = this.props.text;
 		return React.createElement('p',  // type
 			{ className: 'tagText'}, // properties
 		   this.props.text,  // contents
 		React.createElement('button',{className:'xButton',onClick: function onClick(e){
 		console.log("Tag onClick");
-		console.log("$$$$$$")
-		console.log(_numId)
-		addDelTag(_numId, "delete", _text);
 		e.stopPropagation(); //not all ancestors
 		_onClick(e,key);
 	}},"x"));
@@ -29,15 +25,13 @@ var photos = [];
 		render(){
 		var _onClick = this.props.onClick
 		var key = this.props.id;
-		var _numId = this.props.numId;
 		var _text = this.props.text;
 		return React.createElement('p',//type
 			{className: 'AddTag'},//properties
 			React.createElement('input',{className:'addText',id:key+this.props.index,onClick: function(e){e.stopPropagation();}}),React.createElement('button',{className:'addButton',onClick:function onClick(e){
 			console.log("AddTag onClick");
-			addDelTag(_numId, "add", _text);
 			e.stopPropagation();//not all ancestors
-			_onClick(e,key);			
+			_onClick(e,key,_text);			
 }},"+"));//contents
 		}
 	};
@@ -53,18 +47,22 @@ var photos = [];
 		}
 		addTags(event,key)
 		{	
+			var _numId = this.props.numId;
 			let tags = this.state.tags;
 			let name = document.getElementById(key+this.props.index);
 			tags.push(JSON.parse("{\"name\":\""+name.value+"\""+",\"key\":\""+name.value+tags.length+"\"}"));
 			this.setState({tag:tags});
+			addDelTag(_numId, tags);
 		}
 		deleteTags(event,key)
 		{
-			let tags =this.state.tags;	
-			let tag = tags.find(x=>x.key === key);//find matching key in our tag object
+			var _numId = this.props.numId;
+			let tags = this.state.tags;
+			let tag = tags.find(x => x.key === key);//find matching key in our tag object
 			let index = tags.indexOf(tag);
-			tags.splice(index,1);//get rid of this element
-			this.setState({tags:tags});
+			tags.splice(index, 1);//get rid of this element
+			this.setState({ tags: tags });
+			addDelTag(_numId, tags);
 		}
 		render () {
 		var args=[];
@@ -237,11 +235,11 @@ var photos = [];
 		}
 	}
 
-	function addDelTag(id, tag_op, tag_actual)
+	function addDelTag(id, new_tags)
 	{
 	  var xhr = new XMLHttpRequest();
-	  tag = String(id) + "," + tag_op + "," + tag_actual;
-	  console.log(tag)
+	  tag = String(id) + "," + new_tags.map(x=>x.name);
+	  console.log(tag);
 	  xhr.open("GET", "/query?tag=" + encodeURIComponent(tag)); // We want more input sanitization than this!
 	  console.log("/query?tag=" + encodeURIComponent(tag))
 	  xhr.addEventListener("load", (evt) => {
