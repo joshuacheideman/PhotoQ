@@ -29,10 +29,13 @@ var photos = [];
 		render(){
 		var _onClick = this.props.onClick
 		var key = this.props.id;
+		var _numId = this.props.numId;
+		var _text = this.props.text;
 		return React.createElement('p',//type
 			{className: 'AddTag'},//properties
 			React.createElement('input',{className:'addText',id:key+this.props.index,onClick: function(e){e.stopPropagation();}}),React.createElement('button',{className:'addButton',onClick:function onClick(e){
 			console.log("AddTag onClick");
+			addDelTag(_numId, "add", _text);
 			e.stopPropagation();//not all ancestors
 			_onClick(e,key);			
 }},"+"));//contents
@@ -86,7 +89,7 @@ var photos = [];
 			this.state.tags[i].key = _tags[i].name+i;
 		}
 		if(_tags.length<=6)//can only have 7 tags at one time
-		args.push(React.createElement(AddTag,{key:"NewTag",id:"NewTag",index:this.props.index,onClick: this.addTags}));
+		args.push(React.createElement(AddTag,{numId: _numId, key:"NewTag",id:"NewTag",index:this.props.index,onClick: this.addTags}));
 		//console.log(args);
 		return( React.createElement.apply(null,args));// return
 		} // render

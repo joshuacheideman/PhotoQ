@@ -91,14 +91,7 @@ function dynamicQuery(url, response) {
         console.log(tag);
         var split_props = tag.split(",");
         console.log(split_props)
-        // DELETE
-        if (split_props[1] == "delete") {
-            var selectstr = "SELECT tags FROM photoTags WHERE idNum=" + split_props[0];
-        }
-        // ADD
-        // else {
-
-        // }
+        var selectstr = "SELECT tags FROM photoTags WHERE idNum=" + split_props[0];
         response.writeHead(200, { "Content-Type": "text/plain" });
         db.all(selectstr, dataCallback);
         function dataCallback(err, arrayData) {
@@ -106,26 +99,59 @@ function dynamicQuery(url, response) {
                 console.log(err);
             }
             else {
-                let responseData = [];
-                console.log(arrayData)
-                return;
-                for (let i = 0; i < arrayData.length; i++) {
-                    var id = arrayData[i].idNum;
-                    var src = "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/" + arrayData[i].fileName;
-                    var width = arrayData[i].width;
-                    var height = arrayData[i].height;
-                    var tags = arrayData[i].tags;
-                    var landmarks = arrayData[i].landmark;
-                    responseData.push({ id: id, src: src, width: width, height: height, tags: tags, landmarks: landmarks });
+                let responseData = []
+                var arrayDataObj = arrayData[0];
+                var tags = arrayDataObj.tags;
+                var tagSplit = tags.split(",");
+                console.log(tagSplit);
+
+                // DELETE
+                if (split_props[1] == "delete") {
+                    // Create new string with the targeted tag removed
+                    var index = tagSplit.indexOf(split_props[2])
+                    tagSplit.splice(index, 1);
+                    var newStr = tagSplit.join(",");
+                    console.log("###")
+                    console.log(newStr);
+                    // Update Tag with SET
+                    var deleteStr = "UPDATE photoTags SET tags='" + newStr + "' WHERE idNum='" + split_props[0] + "'";
+                    console.log(deleteStr)
+                    db.all(deleteStr);
                 }
-                if (responseData.length == 0) {
-                    responseData.push({ message: message = "There were no photos satisfying this query." });
-                }
+                // ADD
                 else {
-                    responseData.forEach(function (obj) { obj.message = "These are all of the photos satisfying this query\n" });
+                    // Create new string with the targeted tag added
+                    // var index = tagSplit.indexOf(split_props[2])
+                    //tagSplit.splice(index, 1);
+                    tagSplit.push(split_props[2]);
+                    newStr = tagSplit.join(",");
+                    console.log(newStr);
+                    // Update Tag with SET
+                    var addStr = "UPDATE photoTags SET tags='" + newStr + "' WHERE idNum='" + split_props[0] + "'";
+                    console.log(addStr)
+                    db.all(addStr);
                 }
-                response.write(JSON.stringify(responseData));
-                response.end();
+
+                // Give response back that everything is fine
+                // responseData.push({tags: newStr});
+
+                // for (let i = 0; i < arrayData.length; i++) {
+                //     var id = arrayData[i].idNum;
+                //     var src = "http://lotus.idav.ucdavis.edu/public/ecs162/UNESCO/" + arrayData[i].fileName;
+                //     var width = arrayData[i].width;
+                //     var height = arrayData[i].height;
+                //     var tags = arrayData[i].tags;
+                //     var landmarks = arrayData[i].landmark;
+                //     responseData.push({ id: id, src: src, width: width, height: height, tags: tags, landmarks: landmarks });
+                // }
+                // if (responseData.length == 0) {
+                //     responseData.push({ message: message = "There were no photos satisfying this query." });
+                // }
+                // else {
+                //     responseData.forEach(function (obj) { obj.message = "These are all of the photos satisfying this query\n" });
+                // }
+                // response.write(JSON.stringify(responseData));
+                // response.end();
             }
         }
     }
