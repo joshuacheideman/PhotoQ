@@ -38,7 +38,7 @@ function makeTagTable(callback) {
 		landmark = data[i].landmark;
 		insert(landmark, tagTable);
 		tags = data[i].tags;
-		let tagList = tags.split(", ");
+		let tagList = tags.split(",");
 		tagList.map(function (tag) { tag.trim(); });
 		for (let j=0; j<tagList.length; j++) {
 		    insert(tagList[j],tagTable);

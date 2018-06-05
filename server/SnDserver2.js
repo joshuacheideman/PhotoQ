@@ -124,9 +124,10 @@ function dynamicQuery(url, response) {
             auto.makeTagTable(tagTableCallback);
             function tagTableCallback(data) {
             tagTable = data;
-            results = tagTable[tag].tags;
+            results = JSON.stringify(tagTable[tag].tags);
             console.log(results);
-            //console.log(results.replace(/{}"/g, "").split(","));
+            results = results.replace(/[{}"]/g, "").split(",");
+            results = results.map(x=>x.split(":")[0]);
             console.log(typeof(results))
             }
         }
