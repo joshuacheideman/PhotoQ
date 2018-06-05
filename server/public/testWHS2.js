@@ -259,8 +259,10 @@ var photos = [];
 
 function checkInput() {
 	var keys = document.getElementById("key").value;
+	console.log("@@@@@")
+	console.log(keys)
 	console.log(keys.length)
-	if (keys.length < 1) {
+	if (keys.length <= 1) {
 		return;
 	}
 

@@ -5,7 +5,8 @@ var fs = require('fs');
 var sql = require("sqlite3").verbose();
 var dbFile = "PhotoQ.db";
 var db = new sql.Database(dbFile);
-
+var tagTable = {};   // global
+var results;
 //
 // Create a node-static server instance to serve the './public' folder
 //
@@ -118,11 +119,21 @@ function dynamicQuery(url, response) {
         var tag = decodeURIComponent(tagsplit[1]);
         console.log(tag);
 
-        var tagTable = {};   // global
-        auto.makeTagTable(tagTableCallback);
-        function tagTableCallback(data) {
-        tagTable = data;
-        console.log(tagTable.tag.tags)
+        if (tag.length == 2)
+        {
+            auto.makeTagTable(tagTableCallback);
+            function tagTableCallback(data) {
+            tagTable = data;
+            results = tagTable[tag].tags;
+            console.log(results);
+            //console.log(results.replace(/{}"/g, "").split(","));
+            console.log(typeof(results))
+            }
+        }
+        else
+        {
+            console.log(results);
+            console.log(results.filter(x=>x.toLowerCase().startsWith(tag)));
         }
     }
 }
