@@ -84,7 +84,7 @@ margin:20px;
 }
 
 /* Tag styling */
-p.tagText {
+.tagText {
 left: 4px; 
 top: 4px; 
 background-color: #86b2b5;
@@ -93,6 +93,7 @@ border-radius: 5px;
 color: white;
 word-break: break-all;
 width: fit-content;
+border: none;
 }
 #Popup{
 	background: white;

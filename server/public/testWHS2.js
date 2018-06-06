@@ -3,7 +3,6 @@
    var suggested;
    var PopupVisible;
 var photos = [];	
-	
 	// A react component for a tag
 	class Tag extends React.Component {
 	
@@ -11,17 +10,20 @@ var photos = [];
 		var _onClick = this.props.onClick;
 		var key = this.props.id;
 		var xButton = this.props.xButton;
-		return React.createElement('p',  // type
+		return (xButton) ? React.createElement('p',  // type
 			{ className: 'tagText'}, // properties
 		   this.props.text,  // contents
-		(xButton) ? React.createElement('button',{className:'xButton',onClick: function onClick(e){
+		 React.createElement('button',{className:'xButton',onClick: function onClick(e){
 		console.log("Tag onClick");
 		e.stopPropagation(); //not all ancestors
 		_onClick(e,key);
-	}},"x")
-		: React.createElement('span',{},));
-		}
-	};
+	}},"x")) : React.createElement('button',  // type
+	{ className:"tagText",onClick: function onClick(e){
+	console.log("Tag onClick");
+	e.stopPropagation(); //not all ancestors
+	_onClick(e,key);
+	}},this.props.text);
+}}
 	
 	class AddTag extends React.Component {
 		render(){
@@ -50,6 +52,11 @@ var photos = [];
 		constructor(props)
 		{
 			super(props);
+			this.TagClick = this.TagClick.bind(this); 
+		}
+		TagClick(event,key)
+		{
+			
 		}
 		render(){
 			console.log("INSIDE SUGGEST")
@@ -62,10 +69,10 @@ var photos = [];
 				for(let i =0;i<5;i++)
 				{
 					if(suggested_tags[i])
-						args.push(React.createElement('div',{className:"suggestDiv"},React.createElement(Tag,{text: suggested_tags[i],id: suggested_tags[i]+i, xButton:false}),React.createElement('button',{className:"NWArrow"},"\u2196")));
+						args.push(React.createElement('div',{className:"suggestDiv"},React.createElement(Tag,{text: suggested_tags[i],id: suggested_tags[i]+i, onClick: this.TagClick,xButton:false}),React.createElement('button',{className:"NWArrow",onClick:this.TagClick},"\u2196")));
 					else
 						break;
-				}
+				}this
 				return( React.createElement.apply(null,args));// return
 		}
 	}
