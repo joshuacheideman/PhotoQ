@@ -2,6 +2,7 @@
    get the real image data using an AJAX query. */
    var suggested;
    var PopupVisible;
+   var dropDown;
 var photos = [];	
 	// A react component for a tag
 	class Tag extends React.Component {
@@ -41,22 +42,50 @@ var photos = [];
 	};
 	
 
-
+	var SelectContainerTagList=[];
 	class SelectContainer extends React.Component{
+		constructor(props)
+		{
+			super(props);
+			this.TagClick = this.TagClick.bind(this);
+			this.state = {SelectContainerTagList}; 
+		}
+		TagClick(event,key)
+		{
+			let tag = SelectContainerTagList.find(x => x == key);//find matching key in our tag object
+			let index = SelectContainerTagList.indexOf(tag);
+			SelectContainerTagList.splice(index, 1);//get rid of this element
+			this.setState({ tags: SelectContainerTagList });
+			dropDown = ReactDOM.render(React.createElement(AutoSuggest),dropContainer);
+		}
 			render()
 			{
-				return(React.createElement('p',{},));
+				var args=[];
+				args.push('div');//Create element div
+				args.push({className:"SelectRow"});
+				if (SelectContainerTagList)
+				for(let i =0;i<SelectContainerTagList.length;i++)
+				{
+						args.push(React.createElement(Tag,{text: SelectContainerTagList[i],id: SelectContainerTagList[i], onClick:this.TagClick, xButton:true}));
+				}this
+				return( React.createElement.apply(null,args));// return
 			}
 	}
 	class SuggestContainer extends React.Component{
 		constructor(props)
 		{
 			super(props);
-			this.TagClick = this.TagClick.bind(this); 
+			this.TagClick = this.TagClick.bind(this);
+			this.state = {tags:this.props.tags}; 
 		}
 		TagClick(event,key)
 		{
-			
+			let suggested_tags = this.props.tags;
+			let tag = suggested_tags.find(x => x == key);//find matching key in our tag object
+			let index = suggested_tags.indexOf(tag);
+			SelectContainerTagList.push(suggested_tags.splice(index, 1));//get rid of this element
+			this.setState({ tags: suggested_tags });
+			dropDown = ReactDOM.render(React.createElement(AutoSuggest),dropContainer);
 		}
 		render(){
 			console.log("INSIDE SUGGEST")
@@ -66,10 +95,10 @@ var photos = [];
 			args.push('div');//Create element div
 			args.push({});
 			if (suggested_tags)
-				for(let i =0;i<5;i++)
+				for(let i =0;i<suggested_tags.length;i++)
 				{
 					if(suggested_tags[i])
-						args.push(React.createElement('div',{className:"suggestDiv"},React.createElement(Tag,{text: suggested_tags[i],id: suggested_tags[i]+i, onClick: this.TagClick,xButton:false}),React.createElement('button',{className:"NWArrow",onClick:this.TagClick},"\u2196")));
+						args.push(React.createElement('div',{className:"suggestDiv"},React.createElement(Tag,{text: suggested_tags[i],id: suggested_tags[i], onClick: this.TagClick,xButton:false}),React.createElement('button',{className:"NWArrow",onClick:this.TagClick},"\u2196")));
 					else
 						break;
 				}this
@@ -83,9 +112,9 @@ var photos = [];
 			return React.createElement('div'//type
 										,{id:"Popup",style: {visibility: PopupVisible ?"visible":"hidden"}},//property
 										React.createElement(SelectContainer,{},),
-										React.createElement('p',{},"Press tab to create a tag & enter to search"),
+										React.createElement('p',{className:"dropdown_text"},"Press enter to search"),
 										React.createElement('hr',{},),
-										React.createElement('p',{},"Suggested Tags"),
+										React.createElement('p',{className:"dropdown_text"},"Suggested Tags"),
 										React.createElement(SuggestContainer,{tags:suggested},));//contents
 		}
 	}
@@ -147,7 +176,7 @@ var photos = [];
 	};
 	
 	
-	// A react component for an image tile
+	// A react component for an image tileYou got a Bad Query. Try another input
 	class ImageTile extends React.Component {
 	
 		render() {
@@ -238,7 +267,7 @@ var photos = [];
 	const reactContainer = document.getElementById("react");
 	const dropContainer = document.getElementById('reactPop');
 	var reactApp = ReactDOM.render(React.createElement(App),reactContainer);
-	var dropDown = ReactDOM.render(React.createElement(AutoSuggest),dropContainer);
+	dropDown = ReactDOM.render(React.createElement(AutoSuggest),dropContainer);
 	PopupVisible = false;
 	var noitems = document.getElementById("noitems");
 	var reactcontainer= document.getElementById("react-container");	
@@ -247,7 +276,8 @@ var photos = [];
 	function updateImages()
 	{
 	  var keys = document.getElementById("key").value;
-
+	  if(SelectContainerTagList.length!=0)
+			keys = keys+","+SelectContainerTagList;
 	
 	  if (!keys){
 		return; // No query? Do nothing!
@@ -263,7 +293,10 @@ var photos = [];
 			reactApp.setState({photos:JSON.parse(xhr.responseText)});
 			window.dispatchEvent(new Event('resize')); /* The world is held together with duct tape */
 		} else {
+			if(xhr.status==400)
 			document.getElementById("key").value="You got a "+ xhr.responseText+". Try another input";
+			else if(xhr.status==401)
+			document.getElementById("key").value =  "There were no photos satisfying this query.";
 		}
 	  } );
 	  xhr.send();

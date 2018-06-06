@@ -28,13 +28,13 @@ function dynamicQuery(url, response) {
                 console.log("HELLO")
                 if (i >= 0 && i < photoIndexes.length - 1) {
                     var label = decodeURIComponent(photoIndexes[i])
-                    keystr = "( LOWER(photoTags.landmark)LIKE \"%" + label + "%\" OR tags LIKE \"%" + label + "%\") AND";
+                    keystr = keystr + "( LOWER(photoTags.landmark)LIKE \"%" + label + "%\" OR tags LIKE \"%" + label + "%\") AND";
                     console.log("FIRST")
                     console.log(keystr)
                 }
                 if (photoIndexes[i] && i == photoIndexes.length - 1) {
                     var label = decodeURIComponent(photoIndexes[i]);
-                    keystr = "(LOWER(photoTags.landmark) LIKE \"%" + label + "%\" OR tags LIKE \"%" + label + "%\")";
+                    keystr = keystr + "(LOWER(photoTags.landmark) LIKE \"%" + label + "%\" OR tags LIKE \"%" + label + "%\")";
                     console.log("SECOND")
                     console.log(keystr)
                     selectstr = selectstr + keystr;
@@ -58,6 +58,7 @@ function dynamicQuery(url, response) {
                             }
                             if (responseData.length == 0) {
                                 responseData.push({ message: message = "There were no photos satisfying this query." });
+                                response.writeHead(401,{ "Content-Type": "text/plain" });
                             }
                             else {
                                 responseData.forEach(function (obj) { obj.message = "These are all of the photos satisfying this query\n" });
