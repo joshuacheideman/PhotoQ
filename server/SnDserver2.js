@@ -117,25 +117,13 @@ function dynamicQuery(url, response) {
     {
         var tagsplit = url.split("=");
         var tag = decodeURIComponent(tagsplit[1]);
-        console.log(tag);
-
-        if (tag.length == 2)
-        {
+        response.writeHead(200, { "Content-Type": "text/plain" });
             auto.makeTagTable(tagTableCallback);
             function tagTableCallback(data) {
             tagTable = data;
-            results = JSON.stringify(tagTable[tag].tags);
-            console.log(results);
-            results = results.replace(/[{}"]/g, "").split(",");
-            results = results.map(x=>x.split(":")[0]);
-            console.log(typeof(results))
+            response.write(JSON.stringify(tagTable));
+            response.end();
             }
-        }
-        else
-        {
-            console.log(results);
-            console.log(results.filter(x=>x.toLowerCase().startsWith(tag)));
-        }
     }
 }
 
@@ -164,4 +152,4 @@ function handler(request, response) {
 var server = http.createServer(handler);
 
 // fill in YOUR port number!
-server.listen("59655");
+server.listen("50600");
