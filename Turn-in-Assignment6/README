@@ -7,3 +7,5 @@ AnnotateImage.js will not run without the validate key.
 
 Occasionally when the browser is loading, the pop-up will not show up because it takes time for the ajax to load in all of the tags. Refresh the browser if this occurs.
 
+If a tag is chosen to be selected from the suggested tags it will search both in the input box and the selected container. Be sure to get rid of selected tags if you don't want to search for them anymore.
+
