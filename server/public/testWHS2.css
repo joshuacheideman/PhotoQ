@@ -19,7 +19,8 @@ header {
 	   color:#314D7F;
 }
 main {
-     flex: 1 0 auto;  /* the sticky footer trick without the footer */
+	 flex: 1 0 auto;  /* the sticky footer trick without the footer */
+	 z-index:2;
 }
 
 
@@ -127,6 +128,8 @@ margin: 1%;
 #header{
 	display:flex;
 	flex-direction:column;
+	max-height: 70px;
+	margin-top: 30px;
 }
 div.suggestDiv{
 	display: flex;
@@ -199,6 +202,7 @@ img.selected {
 	align-items:center;
 	display:flex;
 	justify-content:center;
+
 }
 #top{
 	margin-top:1%;

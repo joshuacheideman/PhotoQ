@@ -23,7 +23,7 @@ function dynamicQuery(url, response) {
         var selectstr = "SELECT * FROM photoTags WHERE ";
         var keystr = "";
         for (let i = 0; i < photoIndexes.length; i++) {
-            if (photoIndexes[i] && /^[a-z]/.test(photoIndexes[i]))//get the image 
+            if (photoIndexes[i] && /^[A-Za-z]/.test(photoIndexes[i]))//get the image 
             {
                 console.log("HELLO")
                 if (i >= 0 && i < photoIndexes.length - 1) {

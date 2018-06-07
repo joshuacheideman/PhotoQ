@@ -105,7 +105,7 @@ var photos = [];
 				return( React.createElement.apply(null,args));// return
 		}
 	}
-	// A react component for the autosuggest
+	// A react component
 	class AutoSuggest extends React.Component{
 		render()
 		{
@@ -283,7 +283,7 @@ var photos = [];
 		return; // No query? Do nothing!
 	  }
 	  var xhr = new XMLHttpRequest();
-	  xhr.open("GET", "/query?keyList=" + encodeURIComponent(keys.replace(/,/g, "+"))); // We want more input sanitization than this!
+	  xhr.open("GET", "/query?keyList=" + encodeURIComponent(keys.replace(/\s/g, "").replace(/,/g, "+"))); // We want more input sanitization than this!
 	  console.log("/query?keyList=" + encodeURIComponent(keys.replace(/,/g, "+")))
 	  xhr.addEventListener("load", (evt) => {
 		if (xhr.status == 200) {
@@ -364,7 +364,7 @@ function checkInput() {
 			results = xhr.responseText;
 			if(keys.length==2)
 		{
-		    twokey= JSON.stringify(JSON.parse(results)[keys].tags);
+		    twokey= JSON.stringify(JSON.parse(results)[keys.toLowerCase()].tags);
             twokey = twokey.replace(/[{}"]/g, "").split(",");
 			twokey = twokey.map(x=>x.split(":")[0]);
 			suggested=twokey;
@@ -381,14 +381,14 @@ function checkInput() {
 	else{
 		if(keys.length==2)
 		{
-			twokey= JSON.stringify(JSON.parse(results)[keys].tags);
+			twokey= JSON.stringify(JSON.parse(results)[keys.toLowerCase()].tags);
             twokey = twokey.replace(/[{}"]/g, "").split(",");
 			twokey = twokey.map(x=>x.split(":")[0]);
 			suggested=twokey;
 		}
 		else
         {
-            suggested= twokey.filter(x=>x.toLowerCase().startsWith(keys));
+            suggested= twokey.filter(x=>x.toLowerCase().startsWith(keys.toLowerCase()));
         }
 	}
 	PopupVisible=true;
