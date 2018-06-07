@@ -1,0 +1,224 @@
+body {
+	min-height: 100vh;  /* need this line to 
+					tell body to fill viewport */
+	font-family: 'Montserrat', sans-serif;
+	background-color: white;
+	display: flex;
+	flex-direction:column;
+	color: #3a25bb;
+	width:100%;
+	overflow-y:scroll;
+     }
+
+header {
+       text-align: center;
+       padding: 1.1%;
+	   font-weight:750;
+	   font-size:50px;
+	   font-style:italic;
+	   color:#314D7F;
+}
+main {
+	 flex: 1 0 auto;  /* the sticky footer trick without the footer */
+	 z-index:2;
+}
+
+
+input {
+	box-sizing:border-box;
+	border: 1px solid #314D7F;
+	font-size: medium;
+	margin-right:-5px;
+	height: 50px;
+	width:60%;
+
+}
+button.material-icons{
+	width:80px;
+	margin-right:10px;
+	height:50px;
+	/*padding-left:2%;*/
+	color: #314D7F;
+	background-color:white;
+	border-color:transparent;
+	border-style:inset;
+	box-sizing:border-box;
+	border:1px solid #314D7F;
+	font-weight:700;
+	font-size:2.5em;
+}
+p {
+	font-size: small;
+	margin: 10px;
+}
+
+div#photoDisplay {
+    width: 400px;
+    margin: 20px;
+}
+
+div.selectedControls {
+	display: flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	position:absolute;
+	justify-content:center;
+	align-items:center;
+}
+
+div.normalControls {
+  display: none;
+}
+
+/* Photo tile - position and size will be given by PhotoGallery */
+div.tile {
+backgroundColor: #eee;
+cursor: pointer;
+overflow: hidden; 
+float: left;
+position: relative;
+display:flex;
+align-items:center;
+justify-content:center;
+align-content:center;
+margin:20px;
+}
+
+/* Tag styling */
+p.tagText {
+left: 4px; 
+top: 4px; 
+background-color: #86b2b5;
+padding: 1%;
+border-radius: 5px;
+color: white;
+word-break: break-all;
+width: fit-content;
+border: none;
+}
+button.tagText{
+	left: 4px; 
+top: 4px; 
+background-color: #86b2b5;
+padding: 1%;
+border-radius: 5px;
+color: white;
+word-break: break-all;
+width: fit-content;
+border: none;
+margin: 1%;
+}
+.dropdown_text {
+	color: grey;
+}
+#Popup{
+	background: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    width: 54%;
+    margin-left: 10%;
+	z-index:2;
+}
+.SelectRow{
+	display:flex;
+	flex-wrap:wrap;
+	margin-top:10px;
+}
+#header{
+	display:flex;
+	flex-direction:column;
+	max-height: 70px;
+	margin-top: 30px;
+}
+div.suggestDiv{
+	display: flex;
+    justify-content: space-between;
+}
+.NWArrow{
+	border: none;
+    background-color: transparent;
+    font-size: 150%;
+    color: darkblue;
+    margin-right: 2%;
+}
+/* Add Tag */
+p.AddTag{
+border-color:#86b2b5;
+border-width:1.5px;
+height:25px;
+width:100px;
+background-color:transparent;
+border-style:solid;
+border-radius:5px;
+}
+/* Style the X button */
+button.xButton{
+margin-left: 15px;
+border:none;
+background-color:transparent;
+color:white;
+font-size:15px;
+}
+/* Style the plus Button */
+button.addButton{
+background-color:transparent;
+border:none;
+color:#86b2b5;
+position: relative;
+left: 10px;
+}
+/* Style text input for addButton*/
+input.addText{
+border:none;
+height:100%;
+background-color:transparent;
+width:80%;
+color:white;
+}
+img {
+display: block;
+margin-bottom:2%;
+padding-left:2%;
+}
+
+/* so far nothing special when image selected */
+img.normal {
+}
+
+img.selected {
+}
+#query{
+	display:flex;
+	flex-direction:row;
+	margin-left:10%;
+	margin-top:1%;
+	align-items:center;
+	margin-bottom:3%;
+}
+#react-container{
+	background-color:#f4f4f4;
+	flex:1 0 auto;
+	align-items:center;
+	display:flex;
+	justify-content:center;
+
+}
+#top{
+	margin-top:1%;
+	display:flex;
+	flex-direction:row;
+}
+#noitems{
+	color:#909EB8;
+	font-size:50px;
+	padding-bottom:25px;
+}
+#react{
+	margin:5% 2% 5% 1%;
+}
+@media only screen and (max-width:700px){
+#noitems{
+	font-size:30px;
+}
+}
