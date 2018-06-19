@@ -283,7 +283,7 @@ var photos = [];
 		return; // No query? Do nothing!
 	  }
 	  var xhr = new XMLHttpRequest();
-	  xhr.open("GET", "/query?keyList=" + encodeURIComponent(keys.replace(/\s/g, "").replace(/,/g, "+"))); // We want more input sanitization than this!
+	  xhr.open("GET", "/query?keyList=" + encodeURIComponent(keys.replace(/^\s+|\s+$/g, "").replace(/,/g, "+"))); // We want more input sanitization than this!
 	  console.log("/query?keyList=" + encodeURIComponent(keys.replace(/,/g, "+")))
 	  xhr.addEventListener("load", (evt) => {
 		if (xhr.status == 200) {
