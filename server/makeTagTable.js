@@ -36,7 +36,8 @@ function makeTagTable(callback) {
 	    var tags, landmark;
 	    for (let i=0; i<data.length; i++) {
 		landmark = data[i].landmark;
-		insert(landmark, tagTable);
+		landmark = landmark.split(",");//If landmark has a comma split it off
+		insert(landmark[0], tagTable);
 		tags = data[i].tags;
 		let tagList = tags.split(",");
 		tagList.map(function (tag) { tag.trim(); });
