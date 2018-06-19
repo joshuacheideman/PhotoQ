@@ -112,6 +112,7 @@ margin: 1%;
 	color: grey;
 }
 #Popup{
+	display:inline-table;
 	background: white;
     border-style: solid;
     border-width: 1px;
@@ -196,6 +197,9 @@ img.selected {
 	align-items:center;
 	margin-bottom:3%;
 }
+#reactPop{
+	display: inline-flex;
+}
 #react-container{
 	background-color:#f4f4f4;
 	flex:1 0 auto;
@@ -220,5 +224,12 @@ img.selected {
 @media only screen and (max-width:700px){
 #noitems{
 	font-size:30px;
+}
+#top{
+	display:flex;
+	flex-direction:column;	
+}
+#noitems{
+	font-size:20px;
 }
 }

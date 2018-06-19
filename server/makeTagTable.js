@@ -36,13 +36,16 @@ function makeTagTable(callback) {
 	    var tags, landmark;
 	    for (let i=0; i<data.length; i++) {
 		landmark = data[i].landmark;
-		insert(landmark, tagTable);
+		console.log(landmark);
+		landmark = landmark.split(",");
+		insert(landmark[0], tagTable);
 		tags = data[i].tags;
 		let tagList = tags.split(",");
 		tagList.map(function (tag) { tag.trim(); });
 		for (let j=0; j<tagList.length; j++) {
 		    insert(tagList[j],tagTable);
 		}
+		console.log(tagList);
 	    }
 	    alphabetize();
 	    dumpToFile();

@@ -15,9 +15,6 @@ header {
 	  
 }
 
-
-
-
 main {
      flex: 1 0 auto;  /* the sticky footer trick without the footer */
 }

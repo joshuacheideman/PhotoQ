@@ -25,7 +25,16 @@ var photos = [];
 	_onClick(e,key);
 	}},this.props.text);
 }}
-	
+	class AddButton extends React.Component{
+		render(){
+		var _onClick = this.props.onClick;
+		var key = this.props.id;
+		return React.createElement('button',{className:"NWArrow",onClick: function onClick(e){
+			e.stopPropagation();
+			_onClick(e,key);
+		}},"\u2196");
+		}
+	};
 	class AddTag extends React.Component {
 		render(){
 		var _onClick = this.props.onClick
@@ -98,7 +107,7 @@ var photos = [];
 				for(let i =0;i<suggested_tags.length;i++)
 				{
 					if(suggested_tags[i])
-						args.push(React.createElement('div',{className:"suggestDiv"},React.createElement(Tag,{text: suggested_tags[i],id: suggested_tags[i], onClick: this.TagClick,xButton:false}),React.createElement('button',{className:"NWArrow",onClick:this.TagClick},"\u2196")));
+						args.push(React.createElement('div',{className:"suggestDiv"},React.createElement(Tag,{text: suggested_tags[i],id: suggested_tags[i], onClick: this.TagClick,xButton:false}),React.createElement(AddButton,{id:suggested_tags[i],onClick:this.TagClick})));
 					else
 						break;
 				}this
@@ -275,15 +284,15 @@ var photos = [];
 	window.dispatchEvent(new Event('resize'));
 	function updateImages()
 	{
-	  var keys = document.getElementById("key").value;
+	  var keys="";
 	  if(SelectContainerTagList.length!=0)
-			keys = keys+","+SelectContainerTagList;
+			keys = keys+ SelectContainerTagList;
 	
 	  if (!keys){
 		return; // No query? Do nothing!
 	  }
 	  var xhr = new XMLHttpRequest();
-	  xhr.open("GET", "/query?keyList=" + encodeURIComponent(keys.replace(/\s/g, "").replace(/,/g, "+"))); // We want more input sanitization than this!
+	  xhr.open("GET", "/query?keyList=" + encodeURIComponent(keys.replace(/^\s+|\s+$/g, "").replace(/,/g, "+"))); // We want more input sanitization than this!
 	  console.log("/query?keyList=" + encodeURIComponent(keys.replace(/,/g, "+")))
 	  xhr.addEventListener("load", (evt) => {
 		if (xhr.status == 200) {
