@@ -1,9 +1,22 @@
-Joshua Heideman
-Thomas Tran
-Michael Win
+Programmers:
+  Joshua Heideman
+  Thomas Tran
+  Michael Win
+
+Usage:
+  When searching, the autosuggest will suggest something after inputting two characters and will update if you put in more letters.
+  If there are less than two characters, the autosuggest box will disappear.
+  You can click on the tags that have been suggested. Doing this will bring them into the tags you want to search for.
+  The tags you have clicked on from the suggested tags will be used in the query and not the stuff inputted into the search bar.
+
+  If you click on the photos, you will see a list of at most seven tags.
+  You can delete the tags by clicking on the white X button for that tag.
+  If there are less than seven tags, a blank tag will show up. If you input a string of characters in and hit the + button, 
+  the new tag will be added.
+  Adding or deleting tags will result in an AJAX query modifying the database of photos.
 
 Note:
-AnnotateImage.js will not run without the validate key.
-
-Occasionally when the browser is loading, the pop-up will not show up because it takes time for the ajax to load in all of the tags. Refresh the browser if this occurs.
+  AnnotateImage.js will not run without the validate key.
+  
+  Please use Chrome when using the website. 
 
